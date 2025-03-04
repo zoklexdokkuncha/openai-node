@@ -35,7 +35,12 @@ export {
   type RunCreateParamsStreaming,
   type RunUpdateParams,
   type RunListParams,
+  type RunCreateAndPollParams,
+  type RunCreateAndStreamParams,
+  type RunStreamParams,
   type RunSubmitToolOutputsParams,
   type RunSubmitToolOutputsParamsNonStreaming,
   type RunSubmitToolOutputsParamsStreaming,
+  type RunSubmitToolOutputsAndPollParams,
+  type RunSubmitToolOutputsStreamParams,
 } from './runs';

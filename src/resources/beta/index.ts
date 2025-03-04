@@ -20,6 +20,7 @@ export {
 } from './assistants';
 export { Beta } from './beta';
 export { Realtime } from './realtime/index';
+export { Chat } from './chat/index';
 export {
   Threads,
   type AssistantResponseFormatOption,
@@ -33,6 +34,8 @@ export {
   type ThreadCreateAndRunParams,
   type ThreadCreateAndRunParamsNonStreaming,
   type ThreadCreateAndRunParamsStreaming,
+  type ThreadCreateAndRunPollParams,
+  type ThreadCreateAndRunStreamParams,
 } from './threads/index';
 export {
   VectorStoresPage,

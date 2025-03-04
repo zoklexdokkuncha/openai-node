@@ -2,6 +2,8 @@
 
 import { APIResource } from '../resource';
 import { isRequestOptions } from '../core';
+import { sleep } from '../core';
+import { APIConnectionTimeoutError } from '../error';
 import * as Core from '../core';
 import { CursorPage, type CursorPageParams } from '../pagination';
 import { type Response } from '../_shims/index';
@@ -81,6 +83,32 @@ export class Files extends APIResource {
    */
   retrieveContent(fileId: string, options?: Core.RequestOptions): Core.APIPromise<string> {
     return this._client.get(`/files/${fileId}/content`, options);
+  }
+
+  /**
+   * Waits for the given file to be processed, default timeout is 30 mins.
+   */
+  async waitForProcessing(
+    id: string,
+    { pollInterval = 5000, maxWait = 30 * 60 * 1000 }: { pollInterval?: number; maxWait?: number } = {},
+  ): Promise<FileObject> {
+    const TERMINAL_STATES = new Set(['processed', 'error', 'deleted']);
+
+    const start = Date.now();
+    let file = await this.retrieve(id);
+
+    while (!file.status || !TERMINAL_STATES.has(file.status)) {
+      await sleep(pollInterval);
+
+      file = await this.retrieve(id);
+      if (Date.now() - start > maxWait) {
+        throw new APIConnectionTimeoutError({
+          message: `Giving up on waiting for file ${id} to finish processing after ${maxWait} milliseconds.`,
+        });
+      }
+    }
+
+    return file;
   }
 }
 

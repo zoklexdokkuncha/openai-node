@@ -9,10 +9,26 @@ export class Transcriptions extends APIResource {
    * Transcribes audio into the input language.
    */
   create(
+    body: TranscriptionCreateParams<'json' | undefined>,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<Transcription>;
+  create(
+    body: TranscriptionCreateParams<'verbose_json'>,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<TranscriptionVerbose>;
+  create(
+    body: TranscriptionCreateParams<'srt' | 'vtt' | 'text'>,
+    options?: Core.RequestOptions,
+  ): Core.APIPromise<string>;
+  create(body: TranscriptionCreateParams, options?: Core.RequestOptions): Core.APIPromise<Transcription>;
+  create(
     body: TranscriptionCreateParams,
     options?: Core.RequestOptions,
-  ): Core.APIPromise<TranscriptionCreateResponse> {
-    return this._client.post('/audio/transcriptions', Core.multipartFormRequestOptions({ body, ...options }));
+  ): Core.APIPromise<TranscriptionCreateResponse | string> {
+    return this._client.post(
+      '/audio/transcriptions',
+      Core.multipartFormRequestOptions({ body, ...options, __metadata: { model: body.model } }),
+    );
   }
 }
 
@@ -136,7 +152,9 @@ export interface TranscriptionWord {
  */
 export type TranscriptionCreateResponse = Transcription | TranscriptionVerbose;
 
-export interface TranscriptionCreateParams {
+export interface TranscriptionCreateParams<
+  ResponseFormat extends AudioAPI.AudioResponseFormat | undefined = AudioAPI.AudioResponseFormat | undefined,
+> {
   /**
    * The audio file object (not file name) to transcribe, in one of these formats:
    * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
@@ -168,7 +186,7 @@ export interface TranscriptionCreateParams {
    * The format of the output, in one of these options: `json`, `text`, `srt`,
    * `verbose_json`, or `vtt`.
    */
-  response_format?: AudioAPI.AudioResponseFormat;
+  response_format?: ResponseFormat;
 
   /**
    * The sampling temperature, between 0 and 1. Higher values like 0.8 will make the

@@ -49,6 +49,11 @@ export {
   type RunSubmitToolOutputsParams,
   type RunSubmitToolOutputsParamsNonStreaming,
   type RunSubmitToolOutputsParamsStreaming,
+  type RunCreateAndPollParams,
+  type RunCreateAndStreamParams,
+  type RunStreamParams,
+  type RunSubmitToolOutputsAndPollParams,
+  type RunSubmitToolOutputsStreamParams,
 } from './runs/index';
 export {
   Threads,
@@ -63,4 +68,6 @@ export {
   type ThreadCreateAndRunParams,
   type ThreadCreateAndRunParamsNonStreaming,
   type ThreadCreateAndRunParamsStreaming,
+  type ThreadCreateAndRunPollParams,
+  type ThreadCreateAndRunStreamParams,
 } from './threads';

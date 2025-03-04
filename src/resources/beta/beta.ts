@@ -2,6 +2,7 @@
 
 import { APIResource } from '../../resource';
 import * as AssistantsAPI from './assistants';
+import * as ChatAPI from './chat/chat';
 import {
   Assistant,
   AssistantCreateParams,
@@ -32,6 +33,8 @@ import {
   ThreadCreateAndRunParams,
   ThreadCreateAndRunParamsNonStreaming,
   ThreadCreateAndRunParamsStreaming,
+  ThreadCreateAndRunPollParams,
+  ThreadCreateAndRunStreamParams,
   ThreadCreateParams,
   ThreadDeleted,
   ThreadUpdateParams,
@@ -54,10 +57,12 @@ import {
   VectorStores,
   VectorStoresPage,
 } from './vector-stores/vector-stores';
+import { Chat } from './chat/chat';
 
 export class Beta extends APIResource {
   realtime: RealtimeAPI.Realtime = new RealtimeAPI.Realtime(this._client);
   vectorStores: VectorStoresAPI.VectorStores = new VectorStoresAPI.VectorStores(this._client);
+  chat: ChatAPI.Chat = new ChatAPI.Chat(this._client);
   assistants: AssistantsAPI.Assistants = new AssistantsAPI.Assistants(this._client);
   threads: ThreadsAPI.Threads = new ThreadsAPI.Threads(this._client);
 }
@@ -88,6 +93,8 @@ export declare namespace Beta {
     type VectorStoreUpdateParams as VectorStoreUpdateParams,
     type VectorStoreListParams as VectorStoreListParams,
   };
+
+  export { Chat };
 
   export {
     Assistants as Assistants,
@@ -121,5 +128,7 @@ export declare namespace Beta {
     type ThreadCreateAndRunParams as ThreadCreateAndRunParams,
     type ThreadCreateAndRunParamsNonStreaming as ThreadCreateAndRunParamsNonStreaming,
     type ThreadCreateAndRunParamsStreaming as ThreadCreateAndRunParamsStreaming,
+    type ThreadCreateAndRunPollParams,
+    type ThreadCreateAndRunStreamParams,
   };
 }
